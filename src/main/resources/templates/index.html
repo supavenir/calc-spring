@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Calculatrice</title>
+</head>
+<body>
+{{#calc}}
+<textarea readonly>{{activeOperation}}</textarea>
+<form method="post" action="/calc">
+	<div>
+	{{#numberChars}}
+		<button name="number" value="{{.}}">{{.}}</button>
+	{{/numberChars}}
+	</div>
+	<div>
+	{{#operatorChars}}
+		<button name="operator" value="{{.}}">{{.}}</button>
+	{{/operatorChars}}
+	</div>
+</form>
+{{/calc}}
+</body>
+</html>
