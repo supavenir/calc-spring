@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class Calculatrice {
-	private String numbers = "789456123±0,";
-	private String operators = "÷×-+=";
+	private final String numbers = "789456123±0,";
+	private final String operators = "÷×-+=";
 	private List<Operation> operations;
 	private Operation activeOperation;
 
@@ -20,32 +20,30 @@ public class Calculatrice {
 	public Operation send(String value, boolean isNumber) {
 
 		switch (status) {
-		case empty: {
-			activeOperation = new Operation();
-			activeOperation.setLMember(Double.parseDouble(value));
-			status = OpStatus.member1;
-			break;
-		}
-		case member1:
-			if (isNumber) {
-				activeOperation.addToLMember(value);
-			} else {
-				activeOperation = getOperation(value);
-				status = OpStatus.operator;
+			case empty -> {
+				activeOperation = new Operation();
+				activeOperation.setLMember(Double.parseDouble(value));
+				status = OpStatus.member1;
 			}
-			break;
-
-		case operator:
-			if (isNumber) {
-				activeOperation.setRMember(Double.valueOf(value));
-				status = OpStatus.member2;
-			} else {
-				activeOperation = getOperation(value);
+			case member1 -> {
+				if (isNumber) {
+					activeOperation.addToLMember(value);
+				} else {
+					activeOperation = getOperation(value);
+					status = OpStatus.operator;
+				}
 			}
-			break;
-
-		default:
-			;
+			case operator -> {
+				if (isNumber) {
+					activeOperation.setRMember(Double.valueOf(value));
+					status = OpStatus.member2;
+				} else {
+					activeOperation = getOperation(value);
+				}
+			}
+			default -> {
+				;
+			}
 		}
 		return activeOperation;
 	}
